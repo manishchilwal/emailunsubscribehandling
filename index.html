@@ -118,12 +118,6 @@
             alert("You've been " + statusLabel);
         }
 
-
-        // on  page load, fetch the email id of the user.
-        window.onload = function () {
-            $WZRK_WR.getEmail();
-        };
-
         // will be called after the email id of the user has been fetched
         function wzrk_email_fetched(emailStr) {
             document.getElementById("email").value = emailStr;
