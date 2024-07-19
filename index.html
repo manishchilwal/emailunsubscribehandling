@@ -50,13 +50,14 @@
                 Apply changes
               </button>
             </div>
-            <div class="feedback"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <script type="text/javascript">
+    <script>
+
+      
       // will be called after the email id of the user has been fetched
       function wzrk_email_fetched(emailStr) {
         document.getElementById("email").value = emailStr;
@@ -78,16 +79,16 @@
       }
 
       function wzrk_email_fetched_failed(error) {
-        $(".feedback").html(`<p>${error.error}</p>`);
+          alert(error.error);
       }
 
-      window.addEventListener("b2m-load", function () {
+      window.addEventListener("load", function () {
         var isReEncode = false;
         // on page load, fetch the email id of the user.
         $WZRK_WR.getEmail(isReEncode);
         const params = urlManager.get().params;
         if (!params.e || !params.p) {
-          $(".feedback").html("<p>Missing params</p>");
+          alert("Parameters missing" + statusLabel);
         }
       });
     </script>
