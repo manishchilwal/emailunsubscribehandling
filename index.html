@@ -4,33 +4,7 @@
     <script type="text/javascript">
       const CLEVERTAP_ACCOUNT_ID = "WR7-899-766Z";
     </script>
-    <script type="text/javascript">
-      var clevertap = {
-        event: [],
-        profile: [],
-        account: [],
-        onUserLogin: [],
-        notifications: [],
-        privacy: [],
-      };
-      clevertap.account.push({
-        id: CLEVERTAP_ACCOUNT_ID,
-      }),
-        clevertap.privacy.push({
-          optOut: !1,
-        }),
-        (function () {
-          var t = document.createElement("script");
-          (t.type = "text/javascript"),
-            (t.async = !0),
-            (t.src =
-              ("https:" == document.location.protocol
-                ? "https://d2r1yp2w7bby2u.cloudfront.net"
-                : "http://static.clevertap.com") + "/js/a.js");
-          var e = document.getElementsByTagName("script")[0];
-          e.parentNode.insertBefore(t, e);
-        })();
-    </script>
+    
     <title>Testing</title>
   </head>
   <body>
@@ -65,7 +39,7 @@
 
       // will be called after the subscription preferences for the user have been updated
       function wzrk_email_subscription(status) {
-        $(".feedback").html("<p>Your preferences have been saved</p>");
+          alert("User Subscribed");
       }
 
       // call this function to unsubscribe the user
@@ -91,6 +65,34 @@
           alert("Parameters missing" + statusLabel);
         }
       });
+    </script>
+
+    <script type="text/javascript">
+      var clevertap = {
+        event: [],
+        profile: [],
+        account: [],
+        onUserLogin: [],
+        notifications: [],
+        privacy: [],
+      };
+      clevertap.account.push({
+        id: CLEVERTAP_ACCOUNT_ID,
+      }),
+        clevertap.privacy.push({
+          optOut: !1,
+        }),
+        (function () {
+          var t = document.createElement("script");
+          (t.type = "text/javascript"),
+            (t.async = !0),
+            (t.src =
+              ("https:" == document.location.protocol
+                ? "https://d2r1yp2w7bby2u.cloudfront.net"
+                : "http://static.clevertap.com") + "/js/a.js");
+          var e = document.getElementsByTagName("script")[0];
+          e.parentNode.insertBefore(t, e);
+        })();
     </script>
 
   
