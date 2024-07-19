@@ -4,21 +4,27 @@
     <title>Unsubscribe from email</title>
 
     <script type="text/javascript">
-        var clevertap = { event: [], profile: [], account: [], onUserLogin: [], notifications: [], privacy: [] };
-        // replace with the CLEVERTAP_ACCOUNT_ID with the actual ACCOUNT ID value from your Dashboard -> Settings page
-        clevertap.account.push({ "id": "R5K-486-ZW7Z" });
-        clevertap.privacy.push({ optOut: false }); //set the flag to true, if the user of the device opts out of sharing their data
-        clevertap.privacy.push({ useIP: true }); //set the flag to true, if the user agrees to share their IP data
-        clevertap.dismissSpamControl = true;
-        (function () {
-            var wzrk = document.createElement('script');
-            wzrk.type = 'text/javascript';
-            wzrk.async = true;
-            wzrk.src = ('https:' == document.location.protocol ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com') + '/js/clevertap.min.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(wzrk, s);
-        })();
-    </script>
+
+    const CLEVERTAP_ACCOUNT_ID = "R5K-486-ZW7Z";
+    var clevertap = {
+        event: [],
+        profile: [],
+        account: [],
+        onUserLogin: [],
+        notifications: [],
+        privacy: []
+    };
+    clevertap.account.push({
+        id: CLEVERTAP_ACCOUNT_ID
+    }), clevertap.privacy.push({
+        optOut: !1
+    }), function() {
+        var t = document.createElement("script");
+        t.type = "text/javascript", t.async = !0, t.src = ("https:" == document.location.protocol ? "https://d2r1yp2w7bby2u.cloudfront.net" : "http://static.clevertap.com") + "/js/a.js";
+        var e = document.getElementsByTagName("script")[0];
+        e.parentNode.insertBefore(t, e)
+    }();
+</script>
 
 
 </head>
