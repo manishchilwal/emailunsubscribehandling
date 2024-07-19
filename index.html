@@ -1,82 +1,96 @@
-<html>
-
-<head>
-    <title>Unsubscribe from email</title>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type="text/javascript">
+      const CLEVERTAP_ACCOUNT_ID = "R5K-486-ZW7Z";
+    </script>
+    <title>Testing</title>
+  </head>
+  <body>
+    <section class="main-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-sm-8 col-md-6">
+            <div class="form-group mb-4">
+              <p class="title">Unsubscribe from Bit2Me newsletters</p>
+              <input type="text" id="email" placeholder="john@doe.com" />
+            </div>
+            <div class="form-group">
+              <div id="unsubscribe-groups" style="display: none"></div>
+            </div>
+            <div class="form-group">
+              <button onclick="unsubscribe()" class="b2m-btn btn-solid mr-0">
+                Apply changes
+              </button>
+            </div>
+            <div class="feedback"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <script type="text/javascript">
+      // will be called after the email id of the user has been fetched
+      function wzrk_email_fetched(emailStr) {
+        document.getElementById("email").value = emailStr;
+      }
 
-    const CLEVERTAP_ACCOUNT_ID = "R5K-486-ZW7Z";
-    var clevertap = {
+      // will be called after the subscription preferences for the user have been updated
+      function wzrk_email_subscription(status) {
+        $(".feedback").html("<p>Your preferences have been saved</p>");
+      }
+
+      // call this function to unsubscribe the user
+      function unsubscribe(isReEncode) {
+        $WZRK_WR.unSubEmail(isReEncode);
+      }
+
+      // call this function to resubscribe the user
+      function resubscribe(isReEncode) {
+        $WZRK_WR.subEmail(isReEncode);
+      }
+
+      function wzrk_email_fetched_failed(error) {
+        $(".feedback").html(`<p>${error.error}</p>`);
+      }
+
+      window.addEventListener("b2m-load", function () {
+        var isReEncode = false;
+        // on page load, fetch the email id of the user.
+        $WZRK_WR.getEmail(isReEncode);
+        const params = urlManager.get().params;
+        if (!params.e || !params.p) {
+          $(".feedback").html("<p>Missing params</p>");
+        }
+      });
+    </script>
+
+    <script type="text/javascript">
+      var clevertap = {
         event: [],
         profile: [],
         account: [],
         onUserLogin: [],
         notifications: [],
-        privacy: []
-    };
-    clevertap.account.push({
-        id: CLEVERTAP_ACCOUNT_ID
-    }), clevertap.privacy.push({
-        optOut: !1
-    }), function() {
-        var t = document.createElement("script");
-        t.type = "text/javascript", t.async = !0, t.src = ("https:" == document.location.protocol ? "https://d2r1yp2w7bby2u.cloudfront.net" : "http://static.clevertap.com") + "/js/a.js";
-        var e = document.getElementsByTagName("script")[0];
-        e.parentNode.insertBefore(t, e)
-    }();
-</script>
-
-
-</head>
-
-<body>
-
-
-    <div>
-        <h4>I want to unsubscribe from future emails</h4>
-        <input type="text" id="email" readonly="readonly" />
-        <br/><br/>
-        <button onclick="unsubscribe()">Unsubscribe me</button><br/><br/>
-        <!-- button onclick="resubscribe()">Resubscribe</button -->
-    </div>
-
-
-
-    <script>
-        // on  page load, fetch the email id of the user.
-        window.onload = function() {
-            $WZRK_WR.getEmail();
-        };
-
-        // will be called after the email id of the user has been fetched
-        function wzrk_email_fetched(emailStr) {
-            document.getElementById("email").value = emailStr;
-        }
-
-        // will be called after the subscription preferences for the user have been updated
-        function wzrk_email_subscription(status) {
-            //status 0 : unsubscribed, status 1 : subscribed
-            // todo - you can show a success message to the user from here
-            var statusLabel = 'subscribed';
-            if (status == 0) {
-                statusLabel = 'unsubscribed';
-            }
-            alert("You've been " + statusLabel);
-
-        }
-
-        // call this function to unsubscribe the user
-        function unsubscribe() {
-            $WZRK_WR.unSubEmail();
-
-        }
-
-        // call this function to resubscribe the user
-        function resubscribe() {
-            $WZRK_WR.subEmail();
-        }
+        privacy: [],
+      };
+      clevertap.account.push({
+        id: CLEVERTAP_ACCOUNT_ID,
+      }),
+        clevertap.privacy.push({
+          optOut: !1,
+        }),
+        (function () {
+          var t = document.createElement("script");
+          (t.type = "text/javascript"),
+            (t.async = !0),
+            (t.src =
+              ("https:" == document.location.protocol
+                ? "https://d2r1yp2w7bby2u.cloudfront.net"
+                : "http://static.clevertap.com") + "/js/a.js");
+          var e = document.getElementsByTagName("script")[0];
+          e.parentNode.insertBefore(t, e);
+        })();
     </script>
-
-</body>
-
+  </body>
 </html>
