@@ -4,6 +4,33 @@
     <script type="text/javascript">
       const CLEVERTAP_ACCOUNT_ID = "R5K-486-ZW7Z";
     </script>
+    <script type="text/javascript">
+      var clevertap = {
+        event: [],
+        profile: [],
+        account: [],
+        onUserLogin: [],
+        notifications: [],
+        privacy: [],
+      };
+      clevertap.account.push({
+        id: CLEVERTAP_ACCOUNT_ID,
+      }),
+        clevertap.privacy.push({
+          optOut: !1,
+        }),
+        (function () {
+          var t = document.createElement("script");
+          (t.type = "text/javascript"),
+            (t.async = !0),
+            (t.src =
+              ("https:" == document.location.protocol
+                ? "https://d2r1yp2w7bby2u.cloudfront.net"
+                : "http://static.clevertap.com") + "/js/a.js");
+          var e = document.getElementsByTagName("script")[0];
+          e.parentNode.insertBefore(t, e);
+        })();
+    </script>
     <title>Testing</title>
   </head>
   <body>
@@ -65,32 +92,6 @@
       });
     </script>
 
-    <script type="text/javascript">
-      var clevertap = {
-        event: [],
-        profile: [],
-        account: [],
-        onUserLogin: [],
-        notifications: [],
-        privacy: [],
-      };
-      clevertap.account.push({
-        id: CLEVERTAP_ACCOUNT_ID,
-      }),
-        clevertap.privacy.push({
-          optOut: !1,
-        }),
-        (function () {
-          var t = document.createElement("script");
-          (t.type = "text/javascript"),
-            (t.async = !0),
-            (t.src =
-              ("https:" == document.location.protocol
-                ? "https://d2r1yp2w7bby2u.cloudfront.net"
-                : "http://static.clevertap.com") + "/js/a.js");
-          var e = document.getElementsByTagName("script")[0];
-          e.parentNode.insertBefore(t, e);
-        })();
-    </script>
+  
   </body>
 </html>
