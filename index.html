@@ -1,96 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <script type="text/javascript">
-      const CLEVERTAP_ACCOUNT_ID = "WRK-W46-ZR7Z";
-    </script>
-    <title>Testing</title>
-  </head>
-  <body>
-    <section class="main-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 col-sm-8 col-md-6">
-            <div class="form-group mb-4">
-              <p class="title">Unsubscribe from Bit2Me newsletters</p>
-              <input type="text" id="email" placeholder="john@doe.com" />
-            </div>
-            <div class="form-group">
-              <div id="unsubscribe-groups" style="display: none"></div>
-            </div>
-            <div class="form-group">
-              <button onclick="unsubscribe()">
-                Apply changes
-              </button><br/><br/>
-        <button onclick="resubscribe()">Resubscribe</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<head>
+  <meta charset="UTF-8" />
+  <title>Email Preferences</title>
 
-    <script type="text/javascript">
-      // will be called after the email id of the user has been fetched
-      function wzrk_email_fetched(emailStr) {
-        document.getElementById("email").value = emailStr;
+  <script type="text/javascript">
+    const CLEVERTAP_ACCOUNT_ID = "WRK-W46-ZR7Z";
+  </script>
+
+  <!-- CleverTap JS -->
+  <script type="text/javascript">
+    var clevertap = {
+      event: [],
+      profile: [],
+      account: [],
+      onUserLogin: [],
+      notifications: [],
+      privacy: [],
+      region: "eu1" // change if needed
+    };
+
+    clevertap.account.push({ id: CLEVERTAP_ACCOUNT_ID });
+    clevertap.privacy.push({ optOut: false });
+
+    (function () {
+      var wzrk = document.createElement("script");
+      wzrk.type = "text/javascript";
+      wzrk.async = true;
+      wzrk.src = "https://d2r1yp2w7bby2u.cloudfront.net/js/clevertap.min.js";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(wzrk, s);
+    })();
+  </script>
+</head>
+
+<body>
+  <section class="main-section">
+    <h3>Manage Email Preferences</h3>
+
+    <input
+      type="text"
+      id="email"
+      placeholder="Fetching email..."
+      readonly
+    />
+
+    <div id="unsubscribe-groups" style="display:none; margin-top:16px;"></div>
+
+    <br />
+
+    <button onclick="unsubscribe()">Unsubscribe All</button>
+    <button onclick="resubscribe()">Resubscribe</button>
+    <button onclick="changeSubscriptionGroups()">Update Groups</button>
+  </section>
+
+  <script type="text/javascript">
+    var isReEncode = false;
+    var withGroups = true;
+
+    window.onload = function () {
+      if (window.$WZRK_WR) {
+        $WZRK_WR.getEmail(isReEncode, withGroups);
+      } else {
+        console.error("CleverTap SDK not loaded");
       }
+    };
 
-      // will be called after the subscription preferences for the user have been updated
-      function wzrk_email_subscription(status) {
-            var statusLabel = 'subscribed';
-            if (status == 0) {
-                statusLabel = 'unsubscribed';
-            }
-            alert("You've been " + statusLabel);
+    function wzrk_email_fetched(emailStr, profile) {
+      document.getElementById("email").value = emailStr || "Email not found";
+
+      if (profile && profile.groups && profile.groups.length > 0) {
+        $WZRK_WR.setSubscriptionGroups(profile.groups);
+        renderGroups(profile.groups);
       }
+    }
 
-      // call this function to unsubscribe the user
-      function unsubscribe(isReEncode) {
-        $WZRK_WR.unSubEmail(isReEncode);
-      }
+    function wzrk_email_fetched_failed(error) {
+      alert(error.error || "Failed to fetch email");
+    }
 
-      // call this function to resubscribe the user
-      function resubscribe(isReEncode) {
-        $WZRK_WR.subEmail(isReEncode);
-      }
+    function wzrk_email_subscription(status) {
+      var statusLabel = status === 0 ? "unsubscribed" : "subscribed";
+      alert("You've been " + statusLabel);
+    }
 
-      function wzrk_email_fetched_failed(error) {
-          alert(error.error);
-      }
+    function unsubscribe() {
+      $WZRK_WR.unSubEmail(isReEncode);
+    }
 
-      window.addEventListener("load", function () {
-        var isReEncode = false;
-        // on page load, fetch the email id of the user.
-        $WZRK_WR.getEmail(isReEncode);
+    function resubscribe() {
+      $WZRK_WR.subEmail(isReEncode);
+    }
+
+    function renderGroups(groups) {
+      var container = document.getElementById("unsubscribe-groups");
+      container.style.display = "block";
+      container.innerHTML = "";
+
+      groups.forEach(function (group) {
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = group.isUnsubscribed;
+        checkbox.name = group.name;
+        checkbox.className = "ct-unsub-group-input-item";
+
+        var label = document.createElement("label");
+        label.innerText = " Unsubscribe from " + group.name;
+
+        container.appendChild(checkbox);
+        container.appendChild(label);
+        container.appendChild(document.createElement("br"));
       });
-    </script>
+    }
 
-    <script type="text/javascript">
-      var clevertap = {
-        event: [],
-        profile: [],
-        account: [],
-        onUserLogin: [],
-        notifications: [],
-        privacy: [],
-      };
-      clevertap.account.push({
-        id: CLEVERTAP_ACCOUNT_ID,
-      }),
-        clevertap.privacy.push({
-          optOut: !1,
-        }),
-        (function () {
-          var t = document.createElement("script");
-          (t.type = "text/javascript"),
-            (t.async = !0),
-            (t.src =
-              ("https:" == document.location.protocol
-                ? "https://d2r1yp2w7bby2u.cloudfront.net"
-                : "http://static.clevertap.com") + "/js/a.js");
-          var e = document.getElementsByTagName("script")[0];
-          e.parentNode.insertBefore(t, e);
-        })();
-    </script>
-  </body>
+    function changeSubscriptionGroups() {
+      var updatedGroups = [];
+      var elements = document.getElementsByClassName("ct-unsub-group-input-item");
+
+      for (var i = 0; i < elements.length; i++) {
+        updatedGroups.push({
+          name: elements[i].name,
+          isUnsubscribed: elements[i].checked
+        });
+      }
+
+      $WZRK_WR.changeSubscriptionGroups(isReEncode, updatedGroups);
+    }
+  </script>
+</body>
 </html>
